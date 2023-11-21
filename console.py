@@ -162,6 +162,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance.text = arg_dict['text']
 
         if (cmd_str == 'User'):
+            new_instance = HBNBCommand.classes[cmd_str]()
             new_instance.email = arg_dict['email']
             new_instance.password = arg_dict['password']
             new_instance.first_name = arg_dict['first_name']
@@ -172,6 +173,7 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
         if (cmd_str == 'Amenity'):
+            new_instance = HBNBCommand.classes[cmd_str]()
             new_instance.name = arg_dict['name']
 
             storage.save()
@@ -179,6 +181,7 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
         if (cmd_str == 'City'):
+            new_instance = HBNBCommand.classes[cmd_str]()
             new_instance.state_id = arg_dict['state_id']
             new_instance.name = arg_dict['name']
 
