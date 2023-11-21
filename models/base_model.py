@@ -15,8 +15,10 @@ class BaseModel:
         if not kwargs:
             from models import storage
             self.id = Column(String(60), nullabl=False, primary_key=True)
-            self.created_at = Column(datetime, nullable=False, default=datetime.utcnow())
-            self.updated_at = Column(datetime, nullable=False, default=datetime.utcnow())
+            self.created_at = Column(datetime, nullable=False,
+                                     default=datetime.utcnow())
+            self.updated_at = Column(datetime, nullable=False,
+                                     default=datetime.utcnow())
         else:
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
@@ -46,6 +48,6 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
-    
+
     def delete(self):
         pass
