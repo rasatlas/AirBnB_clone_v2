@@ -155,11 +155,38 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
             storage.save()
 
+<<<<<<< Updated upstream
         if (cmd_str == 'Review'):
             new_instance = HBNBCommand.classes[cmd_str]()
             new_instance.place_id = arg_dict['place_id']
             new_instance.user_id = arg_dict['user_id']
             new_instance.text = arg_dict['text']
+=======
+        if (cmd_str == 'User'):
+            new_instance.email = arg_dict['email']
+            new_instance.password = arg_dict['password']
+            new_instance.first_name = arg_dict['first_name']
+            new_instance.last_name = arg_dict['last_name']
+
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+
+        if (cmd_str == 'Amenity'):
+            new_instance.name = arg_dict['name']
+
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+
+        if (cmd_str == 'City'):
+            new_instance.state_id = arg_dict['state_id']
+            new_instance.name = arg_dict['name']
+
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+>>>>>>> Stashed changes
 
     def help_create(self):
         """ Help information for the create method """
