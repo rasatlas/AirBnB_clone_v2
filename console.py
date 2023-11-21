@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,16 +116,44 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        given_list = args.split()
+        cmd_str = given_list.pop(0)
+        arg_dict = {}
+        for item in given_list:
+            key, value = item.split("=")
+            value = value.replace('_', ' ')
+            arg_dict[key.strip('"')] = value.strip('"')
+        
+        if not cmd_str:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif cmd_str not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        
+        if (cmd_str == 'State'):
+            new_instance = HBNBCommand.classes[cmd_str]()
+            new_instance.name = arg_dict['name']
+            storage.save()
+            print(new_instance.id)
+            storage.save()
+
+        if (cmd_str == 'Place'):
+            new_instance = HBNBCommand.classes[cmd_str]()
+            new_instance.city_id = arg_dict['city_id']
+            new_instance.user_id = arg_dict['user_id']
+            new_instance.name = arg_dict['name']
+            # new_instance.description = arg_dict['description']
+            new_instance.number_rooms = arg_dict['number_rooms']
+            new_instance.number_bathrooms = arg_dict['number_bathrooms']
+            new_instance.max_guest = arg_dict['max_guest']
+            new_instance.price_by_night = arg_dict['price_by_night']
+            new_instance.latitude = arg_dict['latitude']
+            new_instance.longitude = arg_dict['longitude']
+            # new_instance.amenity_ids = arg_dict['amenity_ids']
+            storage.save()
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
