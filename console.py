@@ -143,14 +143,14 @@ class HBNBCommand(cmd.Cmd):
             new_instance.city_id = arg_dict['city_id']
             new_instance.user_id = arg_dict['user_id']
             new_instance.name = arg_dict['name']
-            # new_instance.description = arg_dict['description']
+            new_instance.description = arg_dict['description']
             new_instance.number_rooms = arg_dict['number_rooms']
             new_instance.number_bathrooms = arg_dict['number_bathrooms']
             new_instance.max_guest = arg_dict['max_guest']
             new_instance.price_by_night = arg_dict['price_by_night']
             new_instance.latitude = arg_dict['latitude']
             new_instance.longitude = arg_dict['longitude']
-            # new_instance.amenity_ids = arg_dict['amenity_ids']
+            new_instance.amenity_ids = arg_dict['amenity_ids']
             storage.save()
             print(new_instance.id)
             storage.save()
