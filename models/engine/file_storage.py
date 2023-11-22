@@ -12,7 +12,7 @@ class FileStorage:
         """Returns a list of models currently in storage"""
         if not cls:
             return self.__objects
-        obj_of_cls = []
+        obj_of_cls = {}
         for key, value in self.__objects.items():
             if isinstance(value, cls):
                 obj_of_cls[key] = value
