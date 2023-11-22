@@ -1,20 +1,19 @@
 import os
-from user import User
-from city import City
-from place import Place
-from state import State
-from review import Review
-from amenity import Amenity
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.review import Review
+from models.amenity import Amenity
 from models.base_model import Base
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
 HBNB_MYSQL_PWD = os.getenv('HBNB_MYSQL_PWD')
-HBNB_MYSQL_HOST = os.getenv('HBNB_MYSQL_HOST')
+# HBNB_MYSQL_HOST = os.getenv('HBNB_MYSQL_HOST')
 HBNB_MYSQL_DB = os.getenv('HBNB_MYSQL_DB')
 HBNB_ENV = os.getenv('HBNB_ENV')
-dialect = 'mysql+mysqldb'
 
 
 class DBStorage:
@@ -22,7 +21,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        self.__engine = create_engine('{dialect}://{}:{}@HBNB_MYSQL_HOST/{}'.
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.
                                       format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_DB),
                                       pool_pre_ping=True)
