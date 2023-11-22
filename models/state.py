@@ -13,15 +13,23 @@ HBNB_TYPE_STORAGE = os.getenv('HBNB_TYPE_STORAGE')
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-
     if HBNB_TYPE_STORAGE == "db":
+        name = Column(String(128), nullable=False)
         cities = relationship("City", cascade="delete", backref="state")
     else:
+        name = ""
         @property
         def cities(self):
             """getter attribute cities that returns the list of City instances
                with state_id equals to the current State.id
             """
-            return [city for city in FileStorage.storage.all(City)
-                    if self.id == city.state.id]
+
+            from models.city import City
+            from models.__init__ import storage
+
+            list_object = []
+            buf = storage.all(City)
+            for key, val in buf.items():
+                if self.id == val.state_id:
+                    list_object.append(val)
+            return list_object
