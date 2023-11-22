@@ -22,7 +22,7 @@ relation_ap = Table("place_amenity",
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
-    if HBNB_TYPE_STORAGE != 'db':
+    if HBNB_TYPE_STORAGE == 'db':
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
