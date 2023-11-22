@@ -35,7 +35,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            # storage.new(self)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -53,17 +53,18 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
+
+        if '_sa_instance_state' in dictionary:
+            dictionary.pop('_sa_instance_state', None)
+
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
 
-        if '_sa_instance_state' in dictionary:
-            dictionary.pop('_sa_instance_state', None)
-
         return dictionary
 
     def delete(self):
-        from models import storage
         """ deletes the current instance from the storage """
+        from models import storage
         storage.delete(self)
