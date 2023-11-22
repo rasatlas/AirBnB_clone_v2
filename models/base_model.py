@@ -16,9 +16,13 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
+        from models import storage
+
+        self.id = str(uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
         time_format = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs:
-            from models import storage
             # Creates BaseModel from dictionary.
             # Converts datetime string values into datetime object values.
             # del kwargs["__class__"]
@@ -28,14 +32,6 @@ class BaseModel:
                     setattr(self, key, datetime_obj)
                 elif key != "__class__":
                     setattr(self, key, value)
-        else:
-            from models import storage
-            # Instantiate id, created_at & update_at to default values
-            # upon instantiation of an object.
-            self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            # storage.new(self)
 
     def __str__(self):
         """Returns a string representation of the instance"""
