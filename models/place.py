@@ -1,17 +1,20 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.base_model import BaseModel
-from sqlalchemy import Column, String, Float, ForeignKey
-import models
 import os
+import models
+from models.review import Review
+from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 
 HBNB_TYPE_STORAGE = os.getenv('HBNB_TYPE_STORAGE')
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
-    city_id = Column(String(60), nullable=False, ForeignKey('cities.id'))
-    user_id = Column(String(60), nullable=False, ForeignKey('users.id'))
+    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=False)
     number_rooms = Column(Integer, nullable=False, default=0)
