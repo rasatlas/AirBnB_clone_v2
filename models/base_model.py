@@ -14,10 +14,10 @@ class BaseModel:
         """Instatntiates a new model"""
         self.id = Column(String(60), nullabl=False, primary_key=True)
         self.created_at = Column(datetime, nullable=False,
-                                     default=datetime.utcnow())
+                                 default=datetime.utcnow())
         self.updated_at = Column(datetime, nullable=False,
-                                     default=datetime.utcnow())
-        
+                                 default=datetime.utcnow())
+
         time_format = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs:
             from models import storage
@@ -38,7 +38,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             storage.new(self)
-        """    
+        """
         if not kwargs:
             from models import storage
             self.id = str(uuid4())
