@@ -116,13 +116,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        given_list = args.split()
-        cmd_str = given_list.pop(0)
-        arg_dict = {}
-        for item in given_list:
-            key, value = item.split("=")
-            value = value.replace('_', ' ')
-            arg_dict[key.strip('"')] = value.strip('"')
+        cmd_str = args.split()[0]
+        cmd_args = args.split()[1:]
 
         if not cmd_str:
             print("** class name missing **")
@@ -131,11 +126,31 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        if (cmd_str == 'State'):
+        kwargs = {}
+        for attr in cmd_args:
+            key, value = attr.split("=", 1)
+            if value[0] == '"':
+                value = value.replace("_", " ").replace("\"", "")
+            elif "." in value:
+                value = float(value)
+            else:
+                value = int(value)
+            kwargs[key] = value
+
+        if kwargs == {}:
+            new_instance = eval(cmd_str)()
+        else:
+            new_instance = eval(cmd_str)(**kwargs)
+            storage.new(new_instance)
+        print(new_instance.id)
+        new_instance.save()
+
+        """if (cmd_str == 'State'):
             new_instance = HBNBCommand.classes[cmd_str]()
-            new_instance.name = str(arg_dict['name'])
+            new_instance.name = 
             new_instance.save()
             print(new_instance.id)
+            print(new_instance.name)
             # storage.save()
 
         if (cmd_str == 'Place'):
@@ -191,7 +206,7 @@ class HBNBCommand(cmd.Cmd):
 
             new_instance.save()
             print(new_instance.id)
-            # storage.save()
+            # storage.save()"""
 
     def help_create(self):
         """ Help information for the create method """
