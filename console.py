@@ -147,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
 
         """if (cmd_str == 'State'):
             new_instance = HBNBCommand.classes[cmd_str]()
-            new_instance.name = 
+            new_instance.name =
             new_instance.save()
             print(new_instance.id)
             print(new_instance.name)
@@ -289,7 +289,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all(HBNBCommand.classes[args]).items():
-                    print_list.append(str(v))
+                print_list.append(str(v))
         else:
             for k, v in storage.items():
                 print_list.append(str(v))
