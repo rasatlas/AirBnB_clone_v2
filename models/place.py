@@ -9,11 +9,11 @@ HBNB_TYPE_STORAGE = os.getenv('HBNB_TYPE_STORAGE')
 
 relation_ap = Table("place_amenity",
                     Base.metadata,
-                    Column('place_id',
+                    Column('place_id', String(60),
                            ForeignKey('places.id'),
                            primary_key=True,
                            nullable=False),
-                    Column('amenity_id',
+                    Column('amenity_id', String(60),
                            ForeignKey('amenities.id'),
                            primary_key=True,
                            nullable=False))
@@ -35,6 +35,7 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=False)
         reviews = relationship('Review', backref='place', cascade='delete')
         amenities = relationship('Amenity', secondary='place_amenity',
+                                 back_populates='place_amenities',
                                  viewonly=False)
         amenity_ids = []
     else:
@@ -42,7 +43,7 @@ class Place(BaseModel, Base):
         user_id = ""
         name = ""
         description = ""
-        number_rooms = ""
+        number_rooms = 0
         number_bathrooms = 0
         max_guest = 0
         price_by_night = 0
@@ -52,14 +53,42 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
+        """ getter for the review class """
         """ returns a list of reviews """
-        review_lists = []
-        dict_objs = {}
+        from models.__init__ import storage
+        from models.amenity imporrt Review
 
-        dict_objs = storage.all("Review")
+        list_of_obj = []
 
-        for val in dict_objs.values():
-            if (val.place_id == self.id):
-                review_lists.append(val)
+        dict_objs = storage.all(Review)
 
-        return review_lists
+        for val in dict_objs:
+            if (val.id == self.id):
+                list_of_obj.append(val)
+
+        return list_of_obj
+
+    @property
+    def amenities(self):
+        """ getter for the amenity class """
+        from models.__init__ import storage
+        from models.amenity import Amenity
+
+        list_of_obj = []
+
+        dict_objs = storage.all(Amenity)
+
+        for val in dict_objs:
+            if self.id == value.id:
+                list_of_obj.append(val)
+
+        return list_of_obj
+
+    @amenities.setter
+    def amenities(self, obj):
+        """ setter for the amenities class """
+        from models.__init__ import storage
+        from models.amenity import Amenity
+
+        if isinstance(obj, storage.all(Amenity)):
+            self.amenity_ids.append(obj.id)
