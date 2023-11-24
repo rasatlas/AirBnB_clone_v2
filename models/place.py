@@ -56,7 +56,7 @@ class Place(BaseModel, Base):
         """ getter for the review class """
         """ returns a list of reviews """
         from models.__init__ import storage
-        from models.amenity imporrt Review
+        from models.amenity import Review
 
         list_of_obj = []
 
