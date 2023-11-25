@@ -19,19 +19,24 @@ class BaseModel:
         from models import storage
 
         self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
         time_format = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs:
             # Creates BaseModel from dictionary.
             # Converts datetime string values into datetime object values.
             # del kwargs["__class__"]
-            for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    datetime_obj = datetime.strptime(value, time_format)
-                    setattr(self, key, datetime_obj)
-                elif key != "__class__":
-                    setattr(self, key, value)
+            if "updated_at" in kwargs:
+                kwargs["updated_at"] = datetime.strptime(
+                    kwargs["updated_at"], time_format
+                )
+            if "created_at" in kwargs:
+                kwargs["created_at"] = datetime.strptime(
+                    kwargs["created_at"], time_format
+                )
+            if "__class__" in kwargs:
+                del kwargs["__class__"]
+            self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -47,8 +52,10 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = self.__dict__.copy()
-        dictionary["__class__"] = str(type(self).__name__)
+        dictionary = {}
+        dictionary.update(self.__dict__)
+        dictionary.update({'__class__':
+                          (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary["created_at"] = self.created_at.isoformat()
         dictionary["updated_at"] = self.updated_at.isoformat()
 

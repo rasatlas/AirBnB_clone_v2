@@ -18,6 +18,7 @@ class State(BaseModel, Base):
         cities = relationship("City", cascade="delete", backref="state")
     else:
         name = ""
+
         @property
         def cities(self):
             """getter attribute cities that returns the list of City instances

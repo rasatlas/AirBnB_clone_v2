@@ -7,16 +7,16 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table
 
 HBNB_TYPE_STORAGE = os.getenv('HBNB_TYPE_STORAGE')
 
-relation_ap = Table("place_amenity",
-                    Base.metadata,
-                    Column('place_id', String(60),
-                           ForeignKey('places.id'),
-                           primary_key=True,
-                           nullable=False),
-                    Column('amenity_id', String(60),
-                           ForeignKey('amenities.id'),
-                           primary_key=True,
-                           nullable=False))
+place_amenity = Table("place_amenity",
+                      Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True,
+                             nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -54,7 +54,6 @@ class Place(BaseModel, Base):
     @property
     def reviews(self):
         """ getter for the review class """
-        """ returns a list of reviews """
         from models.__init__ import storage
         from models.amenity import Review
 
