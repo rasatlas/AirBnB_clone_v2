@@ -22,14 +22,14 @@ def do_pack():
     """
 
     time_stamp = datetime.now().strftime('%Y%m%d%H%M%S')
-    output_dir = 'versions'
+    output_dir = "versions"
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
-    archive_name = f'web_static_{time_stamp}.tgz'
+    archive_name = "web_static_{}.tgz".format(time_stamp)
     ouput_path = os.path.join(output_dir, archive_name)
 
-    result = local(f'tar -cvzf {output_path} web_static')
+    result = local("tar -cvzf {} web_static".format(output_path))
     if result.succeeded:
         return output_path
     else:
