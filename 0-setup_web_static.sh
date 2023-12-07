@@ -30,9 +30,9 @@ printf %s "server {
     root   /var/www/html;
     index  index.html index.htm;
 
-	location /hbnb_static {
-		alias /data/web_static/current/;
-	}
+    location /hbnb_static {
+        alias /data/web_static/current/;
+    }
 
     location /redirect_me {
         return 301 http://cuberule.com/;
