@@ -10,11 +10,11 @@ mkdir -p /data/web_static/releases/test/
 touch /data/web_static/releases/test/index.html
 
 printf %s "<html>
-	<head>
-	</head>
-	<body>
-		Holberton School
-	</body>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
 </html>" > /data/web_static/releases/test/index.html
 
 mkdir -p /data/web_static/shared
@@ -25,5 +25,5 @@ printf %s "server {
 	location /hbnb_static {
 		alias /data/web_static/current/
 	}
-}" > /etc/nginx/sites_available/default
+}" > /etc/nginx/sites-available/default
 sudo service nginx restart
