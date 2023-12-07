@@ -17,19 +17,21 @@ printf %s "<html>
   </body>
 </html>" > /data/web_static/releases/test/index.html
 
-mkdir -p /data/web_static/shared
+mkdir -p /data/web_static/shared/
+
 ln -sf /data/web_static/releases/test/ /data/web_static/current
+
 chown -R ubuntu:ubuntu /data/
 
 printf %s "server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    add_header X-Served-By 316245-web-01;
+    add_header X-Served-By $HOSTNAME;
     root   /var/www/html;
     index  index.html index.htm;
 
 	location /hbnb_static {
-		alias /data/web_static/current/
+		alias /data/web_static/current/;
 	}
 
     location /redirect_me {
