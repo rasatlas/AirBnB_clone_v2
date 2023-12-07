@@ -2,12 +2,11 @@
 # Fabric script that generates a .tgz archive
 
 import os
-from fabric import task
 from datetime import datetime
-from fabric.operations import local
+from fabric.api import local, runs_once
 
 
-@task
+@runs_once
 def do_pack():
     """
     A Fabric script that generates a .tgz archive from the contents of the
@@ -24,13 +23,13 @@ def do_pack():
 
     time_stamp = datetime.now().strftime('%Y%m%d%H%M%S')
     output_dir = 'versions'
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
 
     archive_name = f'web_static_{time_stamp}.tgz'
     ouput_path = os.path.join(output_dir, archive_name)
 
-    result = local(f'tar -czf {output_path} web_static')
+    result = local(f'tar -cvzf {output_path} web_static')
     if result.succeeded:
         return output_path
     else:
