@@ -6,7 +6,7 @@ then
 	sudo apt-get -y install nginx
 	sudo service nginx start
 fi
-mkdir -p /data/web_static/releases/test/index.html
+mkdir -p /data/web_static/releases/test/
 touch /data/web_static/releases/test/index.html
 
 printf %s "<html>
