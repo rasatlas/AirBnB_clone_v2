@@ -3,10 +3,9 @@
 
 import os
 from datetime import datetime
-from fabric.api import local, runs_once
+from fabric.api import local
 
 
-@runs_once
 def do_pack():
     """
     A Fabric script that generates a .tgz archive from the contents of the
