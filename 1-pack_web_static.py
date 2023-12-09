@@ -2,8 +2,9 @@
 # Fabric script that generates a .tgz archive
 
 import os
-from datetime import datetime
+import tarfile
 from fabric.api import local
+from datetime import datetime
 
 
 def do_pack():
@@ -28,8 +29,14 @@ def do_pack():
     archive_name = "web_static_{}.tgz".format(time_stamp)
     ouput_path = os.path.join(output_dir, archive_name)
 
-    result = local("tar -cvzf {} web_static".format(output_path))
-    if result.succeeded:
+#    result = local("tar -cvzf {} web_static".format(output_path))
+#    if result.succeeded:
+#        return output_path
+#    else:
+#        return None
+    with tarfile.open("output_path", "w:gz") as tar:
+        tar.add("web_static")
+    if os.path.exists(output_path):
         return output_path
     else:
-        return None
+        None
