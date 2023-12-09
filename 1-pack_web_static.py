@@ -27,7 +27,7 @@ def do_pack():
         os.mkdir(output_dir)
 
     archive_name = "web_static_{}.tgz".format(time_stamp)
-    ouput_path = os.path.join(output_dir, archive_name)
+    output_path = os.path.join(output_dir, archive_name)
 
     with tarfile.open(output_path, "w:gz") as tar:
         tar.add("web_static")
