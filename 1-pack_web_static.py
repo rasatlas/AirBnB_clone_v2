@@ -34,7 +34,7 @@ def do_pack():
     #return output_path
     #else:
     #return None
-    command = """with tarfile.open("output_path", "w:gz") as tar:
+    command = """with tarfile.open(output_path, "w:gz") as tar:
         tar.add("web_static")"""
 
     local(command)
@@ -42,4 +42,4 @@ def do_pack():
     if os.path.exists(output_path):
         return output_path
     else:
-        None
+        return None
