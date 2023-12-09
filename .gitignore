@@ -2,3 +2,4 @@ __pycache__
 *.json
 *study*
 main_delete.py
+versions/*
