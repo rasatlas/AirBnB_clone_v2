@@ -48,9 +48,9 @@ def do_deploy(archive_path):
     if not os.path.exists(source):
         return False
 
-    con = Connection(env.hosts, env.user, connect_kwargs=connect_kwargs)
+    # con = Connection(env.hosts, env.user, connect_kwargs=connect_kwargs)
 
-    con.put(source, upload_destination)
+    put(source, upload_destination)
 
     upload_file_path = upload_destination + base_file_name
     extract_dir = unzipped_destination + file_name
@@ -58,9 +58,9 @@ def do_deploy(archive_path):
     with tarfile.open(upload_file_path, r:gz) as tar:
         tar.extractall(path='extract_dir')
     """
-    con.run(uncompress)
-    con.sudo('rm -r upload_file_path')
-    val = con.sudo('ln -sf extract_dir /data/web_static/current')
+    run(uncompress)
+    sudo('rm -r upload_file_path')
+    val = sudo('ln -sf extract_dir /data/web_static/current')
 
     if val.succeeded:
         return True
