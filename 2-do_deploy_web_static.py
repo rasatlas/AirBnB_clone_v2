@@ -52,19 +52,19 @@ def do_deploy(archive_path):
     extract_dir = os.path.join(unzipped_destination, file_name)
     relocate_files = extract_dir + "/web_static/*"
     empty_dir = extract_dir + "/web_static"
-    sudo(f"mkdir -p {extract_dir}").failed is True:
+    run(f"mkdir -p {extract_dir}").failed is True:
         return False
-    sudo(f"tar -xzf {uploaded_file_path} -C {extract_dir}").failed is True:
+    run(f"tar -xzf {uploaded_file_path} -C {extract_dir}").failed is True:
         return False
-    sudo(f"rm {uploaded_file_path}").failed is True:
+    run(f"rm {uploaded_file_path}").failed is True:
         return False
-    sudo(f"cp -r {relocate_files} {extract_dir}").failed is True:
+    run(f"cp -r {relocate_files} {extract_dir}").failed is True:
         return False
-    sudo(f"rm -r {empty_dir}").failed is True:
+    run(f"rm -r {empty_dir}").failed is True:
         return False
-    sudo("rm -r /data/web_static/current").failed is True:
+    run("rm -r /data/web_static/current").failed is True:
         return False
-    sudo(f"ln -s {extract_dir} /data/web_static/current").failed is True:
+    run(f"ln -s {extract_dir} /data/web_static/current").failed is True:
         return False
 
     print("New version deployed!")
