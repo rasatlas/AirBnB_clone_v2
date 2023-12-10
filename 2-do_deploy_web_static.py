@@ -49,7 +49,7 @@ def do_deploy(archive_path):
     uploaded_file_path = os.path.join(upload_destination, base_file_name)
     extract_dir = os.path.join(unzipped_destination, file_name)
     relocate_files = extract_dir + "/web_static/*"
-    empty_dur = extract_dir + "/web_static"
+    empty_dir = extract_dir + "/web_static"
     sudo(f"mkdir -p {extract_dir}")
     sudo(f"tar -xzf {uploaded_file_path} -C {extract_dir}")
     sudo(f"rm {uploaded_file_path}")
