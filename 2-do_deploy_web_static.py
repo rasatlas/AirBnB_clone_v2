@@ -10,7 +10,6 @@ from fabric.api import put, run, env, hosts
 
 
 @hosts(['100.25.20.203', '18.235.243.68'])
-
 def do_deploy(archive_path):
     """
     A Fabric script (based on the file 1-pack_web_static.py) that distributes
