@@ -52,20 +52,27 @@ def do_deploy(archive_path):
     extract_dir = os.path.join(unzipped_destination, file_name)
     relocate_files = extract_dir + "/web_static/*"
     empty_dir = extract_dir + "/web_static"
-    run(f"mkdir -p {extract_dir}").failed is True:
-        return False
-    run(f"tar -xzf {uploaded_file_path} -C {extract_dir}").failed is True:
-        return False
-    run(f"rm {uploaded_file_path}").failed is True:
-        return False
-    run(f"cp -r {relocate_files} {extract_dir}").failed is True:
-        return False
-    run(f"rm -r {empty_dir}").failed is True:
-        return False
-    run("rm -r /data/web_static/current").failed is True:
-        return False
-    run(f"ln -s {extract_dir} /data/web_static/current").failed is True:
-        return False
+    with sudo(f"mkdir -p {extract_dir}") as result:
+        if result.failed:
+            return False
+    with sudo(f"tar -xzf {uploaded_file_path} -C {extract_dir}") as result:
+        if result.failed:
+            return False
+    with sudo(f"rm {uploaded_file_path}") as result:
+        if result.failed:
+            return False
+    with sudo(f"cp -r {relocate_files} {extract_dir}") as result:
+        if result.failed:
+            return False
+    with sudo(f"rm -r {empty_dir}") as result:
+        if result.failed:
+            return False
+    with sudo("rm -r /data/web_static/current") as result:
+        if result.failed:
+            return False
+    with sudo(f"ln -s {extract_dir} /data/web_static/current") as result:
+        if result.failed:
+            return False
 
     print("New version deployed!")
     return True
