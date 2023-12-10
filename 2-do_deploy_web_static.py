@@ -56,10 +56,10 @@ def do_deploy(archive_path):
     extract_dir = unzipped_destination + file_name
     uncompress = """
     with tarfile.open(upload_file_path, r:gz) as tar:
-        tar.extractall(path='extract_dir')
+        tar.extractall(path=extract_dir)
     """
     run(uncompress)
-    sudo('rm -r upload_file_path')
+    sudo('rm -rf upload_file_path')
     val = sudo('ln -sf extract_dir /data/web_static/current')
 
     if val.succeeded:
