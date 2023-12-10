@@ -44,21 +44,28 @@ def do_deploy(archive_path):
     if not os.path.exists(source):
         return False
 
-    put(source, upload_destination)
+    if put(source, upload_destination).failed is True:
+        print(f"Uploading archive to {upload_destination} failed")
+        return False
 
     uploaded_file_path = os.path.join(upload_destination, base_file_name)
     extract_dir = os.path.join(unzipped_destination, file_name)
     relocate_files = extract_dir + "/web_static/*"
     empty_dir = extract_dir + "/web_static"
-    sudo(f"mkdir -p {extract_dir}")
-    sudo(f"tar -xzf {uploaded_file_path} -C {extract_dir}")
-    sudo(f"rm {uploaded_file_path}")
-    sudo(f"cp -r {relocate_files} {extract_dir}")
-    sudo(f"rm -r {empty_dir}")
-    sudo("rm -r /data/web_static/current")
-    val = sudo(f"ln -s {extract_dir} /data/web_static/current")
-
-    if val.succeeded:
-        return True
-    else:
+    sudo(f"mkdir -p {extract_dir}").failed is True:
         return False
+    sudo(f"tar -xzf {uploaded_file_path} -C {extract_dir}").failed is True:
+        return False
+    sudo(f"rm {uploaded_file_path}").failed is True:
+        return False
+    sudo(f"cp -r {relocate_files} {extract_dir}").failed is True:
+        return False
+    sudo(f"rm -r {empty_dir}").failed is True:
+        return False
+    sudo("rm -r /data/web_static/current").failed is True:
+        return False
+    sudo(f"ln -s {extract_dir} /data/web_static/current").failed is True:
+        return False
+
+    print("New version deployed!")
+    return True
