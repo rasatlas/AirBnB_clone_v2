@@ -6,7 +6,9 @@ import gzip
 import shutil
 import tarfile
 from fabric import Connection
-from fabric.api import put, run
+from fabric.api import put
+from fabric.api import run
+from fabric.api import env
 
 
 def do_deploy(archive_path):
