@@ -1,12 +1,15 @@
 #!/usr/bin/python3
-# A Fabric script (based on the file 1-pack_web_static.py) that distributes
-# an archive to web servers, using the function do_deploy
+# A Fabric script that distributes archive to web servers
 
 import os
-from fabric.api import *
+import gzip
+import shutil
+import tarfile
+from fabric import Connection
+from fabric.api import put, run
 
 
-do_deploy(archive_path):
+def do_deploy(archive_path):
     """
     A Fabric script (based on the file 1-pack_web_static.py) that distributes
     an archive to your web servers, using the function do_deploy:
@@ -29,3 +32,36 @@ do_deploy(archive_path):
     - You must use this script to deploy it on your servers: xx-web-01 and
     xx-web-02
     """
+
+    env.user = 'ubuntu'
+    env.hosts = ['100.25.20.203', '18.235.243.68']
+    key_path = '~/.ssh/school'
+    connect_kwargs = {'password': key_path}
+    source = archive_path
+    file_name = os.path.basename(source)
+    name_without_ext = os.path.splitext(file_name)[0]
+    destination = '/tmp/'
+    unzipped_destination = '/data/web_static/releases/'
+
+    if not os.path.exists(source):
+        return False
+
+    con = Connection(env.hosts, env.user, connect_kwargs=connect_kwargs)
+
+    con.put(source, destination)
+
+    file_path = destination + filename
+    extract_dir = unzipped_destination + name_without_ext
+    uncompress = """
+    with tarfile.open(file_path, r:gz) as tar:
+        tar.extractall(path='extract_dir')
+    """
+    con.run(uncompress)
+    con.sudo('rm -r file_path')
+    val = con.sudo('ln -sf extract_dir /data/web_static/current')
+
+    if val.succeeded:
+        return True
+    else:
+        return False
+
