@@ -53,7 +53,7 @@ def do_deploy(archive_path):
     sudo(f"mkdir -p {extract_dir}")
     sudo(f"tar -xzf {uploaded_file_path} -C {extract_dir}")
     sudo(f"rm {uploaded_file_path}")
-    sudo(f"mv -R {relocate_files} {extract_dir}")
+    sudo(f"cp -r {relocate_files} {extract_dir}")
     sudo(f"rm -r {empty_dir}")
     sudo("rm -r /data/web_static/current")
     val = sudo(f"ln -s {extract_dir} /data/web_static/current")
