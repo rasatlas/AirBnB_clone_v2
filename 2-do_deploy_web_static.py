@@ -40,9 +40,9 @@ def do_deploy(archive_path):
     key_path = '~/.ssh/school'
     connect_kwargs = {'password': key_path}
     source = archive_path
-    file_name = os.path.basename(source)
-    name_without_ext = os.path.splitext(file_name)[0]
-    destination = '/tmp/'
+    base_file_name = os.path.basename(source)
+    file_name = os.path.splitext(base_file_name)[0]
+    upload_destination = '/tmp/'
     unzipped_destination = '/data/web_static/releases/'
 
     if not os.path.exists(source):
@@ -50,16 +50,16 @@ def do_deploy(archive_path):
 
     con = Connection(env.hosts, env.user, connect_kwargs=connect_kwargs)
 
-    con.put(source, destination)
+    con.put(source, upload_destination)
 
-    file_path = destination + filename
-    extract_dir = unzipped_destination + name_without_ext
+    upload_file_path = upload_destination + base_file_name
+    extract_dir = unzipped_destination + file_name
     uncompress = """
-    with tarfile.open(file_path, r:gz) as tar:
+    with tarfile.open(upload_file_path, r:gz) as tar:
         tar.extractall(path='extract_dir')
     """
     con.run(uncompress)
-    con.sudo('rm -r file_path')
+    con.sudo('rm -r upload_file_path')
     val = con.sudo('ln -sf extract_dir /data/web_static/current')
 
     if val.succeeded:
