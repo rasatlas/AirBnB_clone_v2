@@ -5,11 +5,11 @@ import os
 import gzip
 import shutil
 import tarfile
-from fabric import Connection
-from fabric.api import put
-from fabric.api import run
-from fabric.api import env
+from fabric.operations import sudo
+from fabric.api import put, run, env, hosts
 
+
+@hosts(['100.25.20.203', '18.235.243.68'])
 
 def do_deploy(archive_path):
     """
@@ -34,11 +34,8 @@ def do_deploy(archive_path):
     - You must use this script to deploy it on your servers: xx-web-01 and
     xx-web-02
     """
-
     env.user = 'ubuntu'
-    env.hosts = ['100.25.20.203', '18.235.243.68']
-    key_path = '~/.ssh/school'
-    connect_kwargs = {'password': key_path}
+    env.key_filename = '~/.ssh/school'
     source = archive_path
     base_file_name = os.path.basename(source)
     file_name = os.path.splitext(base_file_name)[0]
@@ -48,19 +45,15 @@ def do_deploy(archive_path):
     if not os.path.exists(source):
         return False
 
-    # con = Connection(env.hosts, env.user, connect_kwargs=connect_kwargs)
-
     put(source, upload_destination)
 
-    upload_file_path = upload_destination + base_file_name
-    extract_dir = unzipped_destination + file_name
-    uncompress = """
-    with tarfile.open(upload_file_path, r:gz) as tar:
-        tar.extractall(path=extract_dir)
-    """
-    run(uncompress)
-    sudo('rm -rf upload_file_path')
-    val = sudo('ln -sf extract_dir /data/web_static/current')
+    uploaded_file_path = os.path.join(upload_destination, base_file_name)
+    extract_dir = os.path.join(unzipped_destination, file_name)
+
+    sudo(f"mkdir -p {extract_dir}")
+    sudo(f"tar -xzf {uploaded_file_path} -C {extract_dir}")
+    sudo(f"rm {uploaded_file_path}")
+    val = sudo(f"ln -sf {extract_dir} /data/web_static/current")
 
     if val.succeeded:
         return True
