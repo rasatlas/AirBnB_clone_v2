@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Script that starts a flask web application."""
 
+import string
 from flask import Flask
 from markupsafe import escape
 app = Flask(__name__)
@@ -35,7 +36,8 @@ def c_concatenate(name):
         /c/<text>: display “C ” followed by the value of the text variable
         (replace underscore _ symbols with a space )
     """
-    return f"C, {escape(name)}"
+    string = name.replace('_', ' ')
+    return f"C, {string}"
 
 
 if __name__ == "__main__":
