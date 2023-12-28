@@ -42,8 +42,8 @@ def c_concatenate(name):
 @app.route("/python")
 @app.route("/python/")
 @app.route("/python/<text>")
-def python_text(text = "is cool"):
-     """
+def python_text(text="is cool"):
+    """
     Your web application must be listening on 0.0.0.0, port 5000
     Routes:
         - /python/<text>: display “Python ”, followed by the value of the
