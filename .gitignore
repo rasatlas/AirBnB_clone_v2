@@ -4,3 +4,4 @@ __pycache__
 main_delete.py
 versions/*
 *venv/*
+main.py
