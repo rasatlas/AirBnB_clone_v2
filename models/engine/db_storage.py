@@ -10,7 +10,7 @@ from models.state import State
 from models.review import Review
 from models.amenity import Amenity
 from models.base_model import Base
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
@@ -79,5 +79,6 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """closes the session"""
+        """closes the session self.__session.close()"""
+        self.reload()
         self.__session.close()
