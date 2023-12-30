@@ -143,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance = eval(cmd_str)(**kwargs)
             new_instance.save()
         print(new_instance.id)
-        storage.save()
+        # storage.save()
 
         """if (cmd_str == 'State'):
             new_instance = HBNBCommand.classes[cmd_str]()
