@@ -9,7 +9,8 @@ from models.place import Place
 from models.state import State
 from models.review import Review
 from models.amenity import Amenity
-from models.base_model import Base
+from models.base_model import Base, BaseModel
+import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
@@ -79,6 +80,8 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """closes the session self.__session.close()"""
-        self.reload()
-        self.__session.close()
+        """
+        closes the session self.__session.close()
+        edit: class remove() method on the private session attribute
+        """
+        self.__session.remove()
