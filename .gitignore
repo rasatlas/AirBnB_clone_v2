@@ -5,3 +5,4 @@ main_delete.py
 versions/*
 *venv/*
 main.py
+*dump.sql
