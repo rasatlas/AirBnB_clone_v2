@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class
+        """ Create an object of any class"""
         cmd_str = args.split()[0]
         cmd_args = args.split()[1:]
 
@@ -143,21 +143,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance = eval(cmd_str)(**kwargs)
             new_instance.save()
         print(new_instance.id)
-        # storage.save()
-        """
-         """Creates a new instance of a class"""
-        args = arg.split()
-        if len(args) == 0:
-            print("** class name missing **")
-            return False
-        if args[0] in classes:
-            new_dict = self._key_value_parser(args[1:])
-            instance = classes[args[0]](**new_dict)
-        else:
-            print("** class doesn't exist **")
-            return False
-        print(instance.id)
-        instance.save()
+        storage.save()
 
         """if (cmd_str == 'State'):
             new_instance = HBNBCommand.classes[cmd_str]()
