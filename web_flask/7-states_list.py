@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Script that starts a Flask web application"""
 
-from models import *
+from models import storage
 from flask import Flask
 from flask import render_template
 app = Flask(__name__)
@@ -26,7 +26,7 @@ def list_states():
         - LI tag: description of one State: <state.id>: <B><state.name></B>
     """
     states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
-    return render_template('7-states_list.html', states)
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
