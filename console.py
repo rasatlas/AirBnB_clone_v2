@@ -141,9 +141,9 @@ class HBNBCommand(cmd.Cmd):
             new_instance = eval(cmd_str)()
         else:
             new_instance = eval(cmd_str)(**kwargs)
-            storage.new(new_instance)
+            new_instance.save()
         print(new_instance.id)
-        new_instance.save()
+        storage.save()
 
         """if (cmd_str == 'State'):
             new_instance = HBNBCommand.classes[cmd_str]()
