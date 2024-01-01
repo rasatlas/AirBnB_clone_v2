@@ -25,7 +25,7 @@ def list_states():
         sorted by name (A->Z) tip
         - LI tag: description of one State: <state.id>: <B><state.name></B>
     """
-    states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
+    states = sorted(list(storage.all("State").values()), key=lambda s: s.name)
     return render_template('7-states_list.html', states=states)
 
 
@@ -35,5 +35,5 @@ def teardown_db(exception):
     storage.close()
 
 
-if __name__ == "__main":
+if __name__ == "__main__":
     app.run(host='0.0.0.0')
