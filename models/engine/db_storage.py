@@ -45,7 +45,9 @@ class DBStorage:
         Query on the current database session.
         """
         objects = dict()
-        all_classes = (User, State, City, Amenity, Place, Review)
+        # all_classes = (User, State, City, Amenity, Place, Review)
+        all_classes = {"Amenity": Amenity, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
         if cls is None:
             for class_type in all_classes:
                 query = self.__session.query(class_type)
