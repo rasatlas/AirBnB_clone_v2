@@ -13,8 +13,9 @@ def states_list():
     """
     Display HTML page with the states listed in alphabetical order
     """
-    states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
-    return render_template('7-states_list.py', states=states)
+    from models import state
+    states = sorted(list(storage.all(state.State).values()), key=lambda x: x.name)
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
