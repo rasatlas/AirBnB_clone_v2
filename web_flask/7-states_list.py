@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Script that starts a Flask web application"""
 
-from models import storage
+from models import storage, state
 from flask import Flask
 from flask import render_template
 app = Flask(__name__)
@@ -25,12 +25,13 @@ def list_states():
         sorted by name (A->Z) tip
         - LI tag: description of one State: <state.id>: <B><state.name></B>
     """
-    states = sorted(list(storage.all("State").values()), key=lambda s: s.name)
-    return render_template('7-states_list.html', states=states)
+    states = storage.all(state).values()
+    sorted_states = sorted(states, key=lambda s: s.name)
+    return render_template('7-states_list.html', states=sorted_states)
 
 
 @app.teardown_appcontext
-def teardown_db(exception):
+def teardown_db(exception=None):
     """Closes the storage on teardown"""
     storage.close()
 
