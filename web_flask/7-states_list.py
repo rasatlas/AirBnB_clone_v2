@@ -13,8 +13,8 @@ def list_states():
     """
     - Script that lists states
     - You must use storage for fetching data from the storage engine
-    (FileStorage or DBStorage)
-    => from models import storage and storage.all(...)
+    (FileStorage or DBStorage) from models import storage
+    and storage.all(...)
     After each request you must remove the current SQLAlchemy Session:
     - Declare a method to handle @app.teardown_appcontext
     - Call in this method storage.close()
@@ -26,7 +26,7 @@ def list_states():
         - LI tag: description of one State: <state.id>: <B><state.name></B>
     """
     states = storage.all(state).values()
-    sorted_states = sorted(states, key=lambda s: s.name)
+    sorted_states = sorted(states, key=lambda state: state.name)
     return render_template('7-states_list.html', states=sorted_states)
 
 
