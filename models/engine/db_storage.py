@@ -9,9 +9,8 @@ from models.place import Place
 from models.state import State
 from models.review import Review
 from models.amenity import Amenity
-from models.base_model import Base, BaseModel
-import sqlalchemy
-from sqlalchemy import create_engine
+from models.base_model import Base
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
@@ -25,6 +24,7 @@ class DBStorage:
     """ class connects to MySQL server """
     __engine = None
     __session = None
+    Session = None
 
     def __init__(self):
         """ creates new instance """
@@ -44,23 +44,31 @@ class DBStorage:
         """
         Query on the current database session.
         """
-        query_res = []
-        dic = {}
-        clses = [User, State, City, Amenity, Place, Review]
-
-        if cls:
-            query_res = self.__session.query(cls).all()
+        objects = dict()
+        all_classes = (User, State, City, Amenity, Place, Review)
+        if cls is None:
+            for class_type in all_classes:
+                query = self.__session.query(class_type)
+                for obj in query.all():
+                    obj_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
+                    objects[obj_key] = obj
         else:
-            query_res = []
-            for cls_nam in clses:
-                query_res.extend(self.__session.query(cls_nam).all())
-            dic = {f"{obj.__class__.__name__}.{obj.id}": obj for obj in objs}
-
-        return dic
+            query = self.__session.query(cls)
+            for obj in query.all():
+                obj_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
+                objects[obj_key] = obj
+        return objects
 
     def new(self, obj):
         """ adds new object """
-        self.__session.add(obj)
+        if obj is not None:
+            try:
+                self.__session.add(obj)
+                self.__session.flush()
+                self.__session.refresh(obj)
+            except Exception as ex:
+                self.__session.rollback()
+                raise ex
 
     def save(self):
         """ save all changes """
@@ -68,20 +76,19 @@ class DBStorage:
 
     def delete(self, obj=None):
         """ deletes an object """
-        if obj:
-            self.__session.delete(obj)
+        if obj is not None:
+            self.__session.query(type(obj)).filter(
+                    type(obj).id == obj.id).delete(
+                    synchronize_session=False
+            )
 
     def reload(self):
         """ creates all tables """
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = scoped_session(session_factory)()
 
     def close(self):
-        """
-        closes the session self.__session.close()
-        edit: class remove() method on the private session attribute
-        """
+        """ closes the session """
         self.__session.close()

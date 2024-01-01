@@ -78,7 +78,7 @@ class Place(BaseModel, Base):
         dict_objs = storage.all(Amenity)
 
         for val in dict_objs:
-            if self.id == value.id:
+            if self.id == val.id:
                 list_of_obj.append(val)
 
         return list_of_obj
