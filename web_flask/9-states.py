@@ -18,8 +18,8 @@ def list_states(state_id=''):
     If no matching id is found display: Not found!
     """
     states = storage.all(state.State)
-    if id is not None:
-        state_id = 'state.State' + state_id
+    if state_id is not None:
+        state_id = 'State.' + state_id
     return render_template('9-states.html', states=states, state_id=state_id)
 
 
