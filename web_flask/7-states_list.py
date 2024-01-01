@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Script that starts a Flask web application"""
 
-from models import storage, state
+from models import *
 from flask import Flask
 from flask import render_template
 app = Flask(__name__)
@@ -25,8 +25,8 @@ def list_states():
         sorted by name (A->Z) tip
         - LI tag: description of one State: <state.id>: <B><state.name></B>
     """
-    states = storage.all(state).values()
-    sorted_states = sorted(states, key=lambda s: s.name)
+    states = storage.all('State').values()
+    sorted_states = sorted(list(states), key=lambda s: s.name)
     return render_template('7-states_list.html', states=sorted_states)
 
 
