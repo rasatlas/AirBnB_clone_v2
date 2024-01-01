@@ -14,7 +14,7 @@ def display_index_page():
     Display HTML page
     """
     states = storage.all(state.State).values()
-    amenities = storage.all(amenity.Amenity).value()
+    amenities = storage.all(amenity.Amenity).values()
     return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
 
 
