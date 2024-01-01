@@ -7,12 +7,12 @@
         {% if not state_id %}
             <H1>States</H1>
 	    <UL>
-	        {% for state in states|sort(attribute='name') %}
+	        {% for state in states.values()|sort(attribute='name') %}
 		    <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
 		{% endfor %}
 	    </UL>
-	{% elif id in states%}
-	    {% set state = states[id] %}
+	{% elif state_id in states%}
+	    {% set state = states[state_id] %}
 	        <H1>State: {{ state.name }}</H1>
 		<H3>Cities</H3>
 		    <UL>
