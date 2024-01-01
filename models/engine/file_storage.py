@@ -12,6 +12,10 @@ class FileStorage:
         """Returns a list of models currently in storage"""
         if not cls:
             return self.__objects
+        # Ned edit added to make flask work.
+        if not isinstance(cls, type):
+            raise TypeError("'cls' must be a class or None")
+
         obj_of_cls = {}
         for key, value in self.__objects.items():
             if isinstance(value, cls):
