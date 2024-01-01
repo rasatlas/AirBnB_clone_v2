@@ -26,7 +26,7 @@ def list_states():
         - LI tag: description of one State: <state.id>: <B><state.name></B>
     """
     states = storage.all('State').values()
-    sorted_states = sorted(list(states), key=lambda s: s.name)
+    sorted_states = sorted(tuple(states), key=lambda s: s.name)
     return render_template('7-states_list.html', states=sorted_states)
 
 
