@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/states', strict_slashes=False)
 @app.route('/states/<state_id>', strict_slashes=False)
-def list_states(state_id=''):
+def list_states(state_id=None):
     """
     Display HTML page with the states sorted alphabetically
     If state with a matching id as the passed id is found, list
