@@ -31,7 +31,6 @@ class State(BaseModel, Base):
             """getter attribute cities that returns the list of City instances
                with state_id equals to the current State.id
             """
-
             from models.city import City
             from models.__init__ import storage
 
